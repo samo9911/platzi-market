@@ -1,18 +1,21 @@
 package com.paltzi.market.persistence;
 
 import com.paltzi.market.domain.Product;
-import com.paltzi.market.domain.repository.ProductRespository;
+import com.paltzi.market.domain.repository.ProductRepository;
 import com.paltzi.market.persistence.entity.Producto;
 import com.paltzi.market.persistence.crud.ProductoCrudRepository;
 import com.paltzi.market.persistence.mapper.ProductMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductoRespository implements ProductRespository {
+public class ProductoRespository implements ProductRepository {
+    @Autowired
     private ProductoCrudRepository productoCrudRepository;
+    @Autowired
     private ProductMapper mapper;
 
     @Override
@@ -29,7 +32,7 @@ public class ProductoRespository implements ProductRespository {
     @Override
     public Optional<List<Product>> getScarseProducts(int quanty){
         boolean estado;
-        Optional<List<Producto>> productos = productoCrudRepository.findByCantidadStockLessThanAndEstado(quanty, estado:true);
+        Optional<List<Producto>> productos = productoCrudRepository.findByCantidadStockLessThanAndEstado(quanty, estado = true);
         return productos.map(prods -> mapper.toProducts(prods));
     }
     @Override
